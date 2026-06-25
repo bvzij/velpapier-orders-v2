@@ -13,20 +13,24 @@
 
 <script>
   (function() {
-    const correct = '0924';
-    const key = 'vp_auth';
+  const correctHash = '8a786bbc508a5a98ab05dc1d73e99fd2408af98d2da8d83f38b3f5a4b52c7de7';
+  const key = 'vp_auth';
 
-    if (localStorage.getItem(key) === correct) return; // already authenticated
+  if (localStorage.getItem(key) === correctHash) return;
 
-    const input = prompt('Contraseña requerida:');
+  const input = prompt('Contraseña requerida:');
+  if (!input) { document.documentElement.innerHTML = '<p style="text-align:center;margin-top:4rem;font-family:sans-serif">Acceso denegado.</p>'; return; }
 
-    if (input !== correct) {
+  crypto.subtle.digest('SHA-256', new TextEncoder().encode(input)).then(buf => {
+    const hash = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+    if (hash === correctHash) {
+      localStorage.setItem(key, correctHash);
+      location.reload();
+    } else {
       document.documentElement.innerHTML = '<p style="text-align:center;margin-top:4rem;font-family:sans-serif">Acceso denegado.</p>';
-      return;
     }
-
-    localStorage.setItem(key, correct);
-  })();
+  });
+})();
 </script>
 
 <div class="app-layout">
