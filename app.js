@@ -523,6 +523,35 @@ function renderAnalytics() {
     .map(([name, d]) => `<div class="top-client-row"><span class="top-client-name">${name}</span><span class="top-client-val">${d.count} pedido${d.count !== 1 ? 's' : ''}</span><span class="top-client-amount">${formatMXN(d.total)}</span></div>`).join('');
 }
 
+function renderClientList() {
+  const el = document.getElementById('client-list-scroll');
+  if (!el) return;
+  const active = allRecords.filter(r => r.Status !== 'Enviado');
+  const seen = {};
+  active.forEach(r => {
+    const c = r.Cliente || 'Sin nombre';
+    const k = c.toLowerCase();
+    if (!seen[k]) seen[k] = { name: c, count: 0 };
+    seen[k].count++;
+  });
+  const sorted = Object.values(seen).sort((a, b) => a.name.localeCompare(b.name, 'es'));
+  el.innerHTML = '';
+  if (!sorted.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text-faint);padding:4px">Sin clientes activos</div>';
+    return;
+  }
+  sorted.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'client-list-item';
+    item.innerHTML = `
+      <div class="client-list-avatar">${getInitials(c.name)}</div>
+      <span class="client-list-name">${escapeHtml(c.name)}</span>
+      <span class="client-list-count">${c.count}</span>`;
+    item.addEventListener('click', () => selectSearchCliente(c.name));
+    el.appendChild(item);
+  });
+}
+
 function renderAll() {
   const twoWeeksAgo = new Date(Date.now() - 14 * 86400000);
   const activos = allRecords.filter(r => r.Status !== 'Enviado');
@@ -555,6 +584,7 @@ function renderAll() {
   renderGrouped(enviar, 'enviar-list', true);
   renderGrouped(archivo, 'archivo-list', false);
   renderAnalytics();
+  renderClientList();
 }
 
 function switchTab(tab) {

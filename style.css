@@ -198,3 +198,62 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
 .spinning { animation: spin 1s linear infinite; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.client-list-card {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.client-list-scroll {
+  overflow-y: auto;
+  flex: 1;
+  margin-top: 8px;
+}
+
+.client-list-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 4px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.client-list-item:hover {
+  background: var(--surface2);
+}
+
+.client-list-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--blue-bg);
+  color: var(--blue-text);
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.client-list-name {
+  font-weight: 500;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.client-list-count {
+  font-size: 11px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
