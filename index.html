@@ -11,6 +11,21 @@
 </head>
 <body>
 
+<script>
+  (function() {
+    const correct = '0924';
+    const key = 'vp_auth';
+    if (localStorage.getItem(key) !== correct) {
+      const input = prompt('Contraseña requerida:');
+      if (input !== correct) {
+        document.body.innerHTML = '<p style="text-align:center;margin-top:4rem;font-family:sans-serif">Acceso denegado.</p>';
+        return;
+      }
+      localStorage.setItem(key, correct);
+    }
+  })();
+</script>
+
 <div class="app-layout">
 
   <header class="app-header">
