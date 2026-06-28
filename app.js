@@ -377,8 +377,6 @@ function renderOrderRow(r, showActions) {
   if (isOverdueUnpaid) rowClass += ' overdue-unpaid';
   else if (isOverduePaid) rowClass += ' overdue-paid';
   if (status === 'Enviado') rowClass += ' shipped-row';
-  
-  const isShopifyNoName = /^https?:\/\/admin\.shopify\.com\//.test(r.Notas || '') && (!r.Cliente || r.Cliente.trim() === '' || r.Cliente.trim().toLowerCase() === 'sin nombre');
 
   let pillClass = 'pill-nopagado', pillText = `No Pagado${isOverdueUnpaid ? ' ⚠' : ''}`;
   if (status === 'Pagado') { pillClass = 'pill-pagado'; pillText = `Pagado${isOverduePaid ? ' ⚠' : ''}`; }
@@ -465,8 +463,7 @@ function renderGrouped(records, containerId, showActions) {
 
     const group = document.createElement('div'); group.className = 'customer-group';
     const header = document.createElement('div'); header.className = 'customer-header';
-	const isShopifyUnnamed = !cliente || cliente.trim() === '' || cliente.trim().toLowerCase() === 'sin nombre';
-header.innerHTML = `<div class="customer-avatar${isShopifyUnnamed ? ' avatar-unnamed' : ''}">${getInitials(cliente)}</div><div class="customer-name${isShopifyUnnamed ? ' name-unnamed' : ''}">${cliente}${isShopifyUnnamed ? ' <span class="unnamed-badge">Sin nombre · Shopify</span>' : ''}</div>
+    header.innerHTML = `<div class="customer-avatar">${getInitials(cliente)}</div><div class="customer-name">${cliente}</div><span class="customer-owed">${unpaid > 0 ? '· Por cobrar: ' + formatMXN(unpaid) : ''}</span><div class="customer-bulk-actions"></div>`;
 
     const bulk = header.querySelector('.customer-bulk-actions');
     const renameBtn = document.createElement('button');
